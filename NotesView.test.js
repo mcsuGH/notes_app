@@ -8,8 +8,11 @@ const NotesView = require('./NotesView');
 
 const mockedModel = {
   getNotes: () => ['This is an example note', 'Another note']
-  //corrected the syntax - there were curly brackets that shouldn't be there.
-  
+};
+
+const anotherMockedModel = {
+  getNotes: () => ['This is an example note', 'Another note', 'My first note title'],
+  addNote: (titleText) => undefined
 };
 
 describe('NotesView', () => {
@@ -21,6 +24,16 @@ describe('NotesView', () => {
       expect(document.querySelectorAll('div.note').length).toBe(2);
 
     })
+  })
+
+  it('adds a new note with custom title', () => {
+    document.body.innerHTML = fs.readFileSync('./index.html')
+    const notesView = new NotesView(anotherMockedModel);
+    const noteTitleInputEl = document.querySelector('#note-title-input');
+    noteTitleInputEl.value = "My first note title";
+    const noteTitleSubmitEl = document.querySelector('#note-title-submit');
+    noteTitleSubmitEl.click();
+    expect(document.querySelectorAll('div.note').length).toBe(3);
   })
 
 })
