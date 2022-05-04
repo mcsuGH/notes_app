@@ -18,7 +18,8 @@ const anotherMockedModel = {
 };
 
 const mockedApi = {
-  loadNotes: () => ['This is an example note', 'Another note']
+  loadNotes: () => ['This is an example note', 'Another note'],
+  createNote: () => undefined
 };
 
 describe('NotesView', () => {
@@ -67,6 +68,7 @@ describe('NotesView', () => {
       document.body.innerHTML = fs.readFileSync('./index.html');
       const notesView = new NotesView(mockedModel, mockedApi);
       notesView.displayNotesFromApi();
+      notesView.displayNotes();
       expect(document.querySelectorAll('div.note').length).toBe(2);
     })
   })
