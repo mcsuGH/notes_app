@@ -17,6 +17,10 @@ class NotesView {
 
   addNotes(titleText) {
     this.model.addNote(titleText);
+    const newNote = {
+      "content": titleText
+    }
+    this.api.createNote(newNote, this.api.newestNote);
     this.displayNotes()
   }
 
