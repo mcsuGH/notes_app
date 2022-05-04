@@ -5,9 +5,10 @@ require('jest-fetch-mock').enableMocks()
 describe('notesAPI', () => {
   const notesApi = new NotesApi();
   fetch.mockResponseOnce(JSON.stringify({
+    name: 'notes',
     notes: ['test']
   }))
-  notesApi.loadData((dataFromApi) => {
+  notesApi.loadNotes((dataFromApi) => {
     expect(dataFromApi.notes).toBe(['test']);
   })
 })

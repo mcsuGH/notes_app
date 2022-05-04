@@ -11,6 +11,12 @@ class notesModel {
     this.notes.push(note);
   };
 
+  setNotes(notes) {
+    notes.forEach((note) => {
+      this.addNote(note);
+    });
+  }
+
   reset() {
     this.notes = [];
   };

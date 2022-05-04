@@ -17,6 +17,13 @@ describe('notesModel class', () => {
     ]);
   });
 
+  test('#setNotes adds notes taken from an array', () => {
+    let model = new notesModel();
+    const notes = ['Buy milk', 'Go to the gym']
+    model.setNotes(notes);
+    expect(model.getNotes().length).toBe(2);
+  })
+
   test('#reset deletes existing notes to return to empty notes array', () => {
     let model = new notesModel();
     model.addNote('Buy milk');
