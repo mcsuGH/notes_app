@@ -8,10 +8,6 @@ class NotesApi {
       })
   }
 
-  newestNote(data) {
-    return data[data.length - 1];
-  }
-
   createNote(noteText, callback) {
     fetch('http://localhost:3000/notes', {
       method: 'POST',

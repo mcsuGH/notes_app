@@ -20,8 +20,7 @@ class NotesView {
     const newNote = {
       "content": titleText
     }
-    this.api.createNote(newNote, this.api.newestNote);
-    this.displayNotes()
+    this.api.createNote(newNote, this.displayNotes());
   }
 
   displayNotes() {
