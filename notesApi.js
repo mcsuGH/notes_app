@@ -21,7 +21,7 @@ class NotesApi {
       headers: {
         'content-Type': 'application/json',
       },
-      body: JSON.stringify(noteText)
+      body: JSON.stringify({content: noteText})
     })
     .then(response => response.json())
     .then(data => {
@@ -32,6 +32,25 @@ class NotesApi {
       callback();
     })
   };
+
+  convertToEmoji(text, callback) {
+    fetch('https://makers-emojify.herokuapp.com/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({text: text})
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', (data));
+      return data.emojified_text
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      callback();
+  })
+  }
 }
 
 module.exports = NotesApi;
