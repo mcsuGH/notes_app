@@ -14,18 +14,6 @@ describe('notesAPI', () => {
     })
   })
   
-  // describe('.createNote', () => {
-  //   it('makes a POST request to notes backend to create a new note', () => {
-  //     const notesApi = new NotesApi();
-  //     fetch.mockResponseOnce(JSON.stringify({
-  //       content: ('Create a note')
-  //     }))
-  //     notesApi.createNote('Create a note', notesApi.newestNote((something) => {
-  //       expect(something.content).toBe('Create a note');
-  //     }))
-  //   })
-  // })
-
   describe('.createNote', () => {
     it('makes a POST request to notes backend to create a new note', () => {
       const notesApi = new NotesApi();

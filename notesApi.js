@@ -25,10 +25,11 @@ class NotesApi {
     })
     .then(response => response.json())
     .then(data => {
-      console.log('Success:', callback(data));
+      console.log('Success:', (data));
     })
     .catch((error) => {
       console.error('Error:', error);
+      callback();
     })
   };
 }
