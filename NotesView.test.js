@@ -14,7 +14,7 @@ const mockedModel = {
 
 const anotherMockedModel = {
   getNotes: () => ['This is an example note', 'Another note', 'My first note title'],
-  addNote: (titleText) => undefined
+  addNote: (titleText) => 'My first note title'
 };
 
 const mockedApi = {
@@ -49,8 +49,10 @@ describe('NotesView', () => {
       noteTitleInputEl.value = "My first note title";
       const noteTitleSubmitEl = document.querySelector('#note-title-submit');
       noteTitleSubmitEl.click();
-      expect(document.querySelectorAll('div.note').length).toBe(3);
+      expect(notesView.model.addNote('My first note title')).toHaveBeenCalled();
+      // expect(document.querySelectorAll('div.note').length).toBe(3);
     })
+
   
     it('clears the text field after submitting a note', () => {
       document.body.innerHTML = fs.readFileSync('./index.html');
@@ -67,9 +69,10 @@ describe('NotesView', () => {
     it('loads the notes taken from the api', () => {
       document.body.innerHTML = fs.readFileSync('./index.html');
       const notesView = new NotesView(mockedModel, mockedApi);
-      notesView.displayNotesFromApi();
-      notesView.displayNotes();
-      expect(document.querySelectorAll('div.note').length).toBe(2);
+      notesView.displayNotesFromApi(() => {
+        expect(document.querySelectorAll('div.note').length).toBe(2);
+      });
+    
     })
   })
 
