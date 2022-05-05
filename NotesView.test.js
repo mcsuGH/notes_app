@@ -109,10 +109,8 @@ describe('.displayError', () => {
       const mockApi = new notesApi();
       const notesView = new NotesView(mockModel, mockApi);
 
-      notesView.displayError.mockImplementation(() => {
-        throw new Error('Oops, something went wrong')
-      });
-      expect(document.querySelector("div.note")).toEqual('Oops, something went wrong')
+      notesView.displayError();
+      expect(document.querySelector("div.error").innerText).toEqual('Oops, something went wrong')
   })
 })
 
