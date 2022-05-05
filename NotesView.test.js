@@ -6,6 +6,7 @@ const fs = require('fs');
 const { hasUncaughtExceptionCaptureCallback } = require('process');
 const NotesView = require('./NotesView');
 
+
 const mockedModel = {
   getNotes: () => ['This is an example note', 'Another note'],
   addNote: () => undefined,
@@ -14,11 +15,11 @@ const mockedModel = {
 
 const anotherMockedModel = {
   getNotes: () => ['This is an example note', 'Another note', 'My first note title'],
-  addNote: (titleText) => 'My first note title'
+  addNote: () => 'My first note title'
 };
 
 const mockedApi = {
-  loadNotes: () => ['This is an example note', 'Another note'],
+  loadNotes: () => undefined,
   createNote: () => undefined
 };
 
@@ -49,8 +50,8 @@ describe('NotesView', () => {
       noteTitleInputEl.value = "My first note title";
       const noteTitleSubmitEl = document.querySelector('#note-title-submit');
       noteTitleSubmitEl.click();
-      expect(notesView.model.addNote('My first note title')).toHaveBeenCalled();
-      // expect(document.querySelectorAll('div.note').length).toBe(3);
+      // expect(notesView.model.addNote('My first note title')).toHaveBeenCalled();
+      expect(document.querySelectorAll('div.note').length).toBe(3);
     })
 
   
@@ -68,11 +69,30 @@ describe('NotesView', () => {
   describe('.displayNotesFromApi', () => {
     it('loads the notes taken from the api', () => {
       document.body.innerHTML = fs.readFileSync('./index.html');
-      const notesView = new NotesView(mockedModel, mockedApi);
-      notesView.displayNotesFromApi(() => {
-        expect(document.querySelectorAll('div.note').length).toBe(2);
-      });
-    
+      const notesModel = require('./notesModel');
+      const notesApi = require('./notesApi');
+      jest.mock('./notesApi');
+      jest.mock('./notesModel');
+      const mockModel = new notesModel();
+      const mockApi = new notesApi();
+      const notesView = new NotesView(mockModel, mockApi);
+
+      notesView.model.getNotes.mockImplementation(() => [
+        "this is a note",
+      ]);
+      notesView.model.setNotes.mockImplementation(() => [
+        "this is a note",
+      ]);
+  
+      notesView.api.loadNotes.mockImplementation((callback) =>
+        callback(["this is a note"])
+      );
+
+      notesView.displayNotesFromApi();
+      expect(notesView.model.getNotes).toHaveBeenCalledTimes(1);
+      expect(notesView.model.setNotes).toHaveBeenCalledTimes(1);
+      expect(document.querySelectorAll("div.note").length).toEqual(1);
+     
     })
   })
 
