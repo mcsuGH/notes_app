@@ -5,11 +5,12 @@ class NotesApi {
     fetch('http://localhost:3000/notes')
       .then(response => response.json())
       .then((data) => {
+        console.log(data);
         callback(data);
       })
-      .catch((error) => {
-        // console.error('Error:', error)
-        errorCallback(error);
+      .catch(() => {
+        console.error('Error');
+        errorCallback();
         // console.log('Catch Error Test')
       })
   }
