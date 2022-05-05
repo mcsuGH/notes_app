@@ -16,12 +16,10 @@ class NotesView {
   }
 
   addNotes(titleText) {
-    this.model.addNote(titleText);
     const newNote = {
       "content": titleText
     }
-    this.api.createNote(newNote, this.displayError());
-    this.displayNotes();
+    this.api.createNote(newNote, this.displayNotesFromApi());
   }
 
   displayNotes() {
@@ -39,14 +37,21 @@ class NotesView {
   };
 
   displayNotesFromApi() {
+    this.model.reset();
     this.api.loadNotes((presetNotes) => {
       this.model.setNotes(presetNotes);
       this.displayNotes();
+    }, () => {
+      this.displayError();
     })
   }
 
   displayError() {
     // this.api.loadNotes((error) => {
+      const oldErrors = document.querySelectorAll('div.error');
+      oldErrors.forEach((error) => {
+        error.remove();
+      })
       let errorElement = document.createElement('div')
       errorElement.className = 'error'
       errorElement.innerText = "Oops, something went wrong"
