@@ -18,12 +18,9 @@ class NotesView {
   addNotes(titleText) {
     const newNote = {
       "content": titleText
-    }
-    this.api.convertToEmoji(newNote, (emojified) => {
-      console.log(emojified),
-    this.api.createNote(emojified, this.displayNotesFromApi());
-  }
-  )}
+    };
+    this.api.createNote(newNote, this.displayNotesFromApi());
+  };
 
   displayNotes() {
     const oldNotes = document.querySelectorAll('div.note');
