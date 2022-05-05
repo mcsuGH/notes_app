@@ -40,7 +40,24 @@ class NotesView {
   displayNotesFromApi() {
     this.api.loadNotes((presetNotes) => {
       this.model.setNotes(presetNotes);
+      let errorElement = document.createElement('div')
+      errorElement.className = 'error'
+      errorElement.innerText = "Oops, something went wrong"
+      this.mainContainerEl.append(errorElement);
       this.displayNotes();
+    })
+  }
+
+  displayError() {
+    console.log('7')
+    this.api.loadNotes((callback, error) => {
+      console.log('1')
+      let errorElement = document.createElement('div')
+      console.log('2')
+      errorElement.className = 'error'
+      console.log('3')
+      errorElement.innerText = "Oops, something went wrong"
+      this.mainContainerEl.append(errorElement);
     })
   }
 

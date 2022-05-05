@@ -95,5 +95,24 @@ describe('NotesView', () => {
      
     })
   })
-
 })
+describe('.displayError', () => {
+  it('displays an error on the page if theres an error', () => {
+    document.body.innerHTML = fs.readFileSync('./index.html');
+      const notesModel = require('./notesModel');
+      const notesApi = require('./notesApi');
+      notesModel.mockClear();
+      notesApi.mockClear();
+      jest.mock('./notesApi');
+      jest.mock('./notesModel');
+      const mockModel = new notesModel();
+      const mockApi = new notesApi();
+      const notesView = new NotesView(mockModel, mockApi);
+
+      notesView.displayError.mockImplementation(() => {
+        throw new Error('Oops, something went wrong')
+      });
+      expect(document.querySelector("div.note")).toEqual('Oops, something went wrong')
+  })
+})
+

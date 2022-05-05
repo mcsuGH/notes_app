@@ -13,4 +13,5 @@ console.log(model.getNotes());
 const notesview = new NotesView(model, api)
 notesview.displayNotesFromApi();
 
+notesview.displayError();
 console.log(notesview.displayNotes())
