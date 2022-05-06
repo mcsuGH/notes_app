@@ -19,7 +19,9 @@ class NotesView {
     const newNote = {
       "content": titleText
     };
-    this.api.createNote(newNote, this.displayNotesFromApi());
+    this.api.createNote(newNote, () => {
+      this.displayNotesFromApi()
+    });
   };
 
   displayNotes() {
