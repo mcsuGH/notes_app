@@ -26,7 +26,7 @@ class NotesApi {
     .then(response => response.json())
     .then(data => {
       console.log('Success:', (data));
-      callback();
+      callback(data);
     })
     .catch((error) => {
       console.error('Error:', error);
