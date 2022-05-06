@@ -8,10 +8,17 @@ class NotesView {
     this.mainContainerEl = document.querySelector('#main-container');
     this.NoteTitleSubmitEl = document.querySelector('#note-title-submit');
     this.noteTitleInputEl = document.querySelector('#note-title-input');
+    this.resetButtonEl = document.querySelector('#reset-button');
 
     this.NoteTitleSubmitEl.addEventListener('click', () => {
       this.addNotes(this.noteTitleInputEl.value);
       this.noteTitleInputEl.value = '';
+    })
+
+    this.resetButtonEl.addEventListener('click', () => {
+      this.api.reset(() => {
+        this.displayNotesFromApi();
+      });
     })
   }
 
@@ -54,17 +61,15 @@ class NotesView {
   }
 
   displayError() {
-    // this.api.loadNotes((error) => {
-      const oldErrors = document.querySelectorAll('div.error');
-      oldErrors.forEach((error) => {
-        error.remove();
-      })
-      let errorElement = document.createElement('div')
-      errorElement.className = 'error'
-      errorElement.innerText = "Oops, something went wrong"
-      this.mainContainerEl.append(errorElement);
-    }
-  // }
+    const oldErrors = document.querySelectorAll('div.error');
+    oldErrors.forEach((error) => {
+      error.remove();
+    })
+    let errorElement = document.createElement('div')
+    errorElement.className = 'error'
+    errorElement.innerText = "Oops, something went wrong"
+    this.mainContainerEl.append(errorElement);
+  }
 
 }
 

@@ -20,7 +20,8 @@ const anotherMockedModel = {
 
 const mockedApi = {
   loadNotes: () => undefined,
-  createNote: () => undefined
+  createNote: () => undefined,
+  convertToEmoji: () => undefined
 };
 
 describe('NotesView', () => {
@@ -44,14 +45,45 @@ describe('NotesView', () => {
 
   describe('.addNotes', () => {
     it('adds a new note with custom title', () => {
-      document.body.innerHTML = fs.readFileSync('./index.html')
-      const notesView = new NotesView(anotherMockedModel, mockedApi);
+      document.body.innerHTML = fs.readFileSync('./index.html');
+      const notesModel = require('./notesModel');
+      const notesApi = require('./notesApi');
+      jest.mock('./notesApi');
+      jest.mock('./notesModel');
+      const mockModel = new notesModel();
+      const mockApi = new notesApi();
+      const notesView = new NotesView(mockModel, mockApi);
+
+      notesView.api.convertToEmoji.mockImplementation(() =>
+        notesView.api.createNote("this is a note")
+      );
+
+      notesView.api.createNote.mockImplementation(() =>
+        notesView.displayNotesFromApi()
+      );
+
+      notesView.model.reset.mockImplementation();
+
+      notesView.api.loadNotes.mockImplementation(() =>
+        notesView.displayNotes()
+      );
+
+      notesView.model.setNotes.mockImplementation(() => [
+        notesView.model.addNote
+      ]);
+
+      notesView.model.addNote.mockImplementation();
+
+      notesView.model.getNotes.mockImplementation(() => [
+        "this is a note",
+      ]);
+
       const noteTitleInputEl = document.querySelector('#note-title-input');
-      noteTitleInputEl.value = "My first note title";
+      noteTitleInputEl.value = "this is a note";
       const noteTitleSubmitEl = document.querySelector('#note-title-submit');
       noteTitleSubmitEl.click();
-      // expect(notesView.model.addNote('My first note title')).toHaveBeenCalled();
-      expect(document.querySelectorAll('div.note').length).toBe(3);
+
+      expect(notesView.model.getNotes).toHaveBeenCalledTimes(1);
     })
 
   
@@ -95,22 +127,44 @@ describe('NotesView', () => {
      
     })
   })
-})
-describe('.displayError', () => {
-  it('displays an error on the page if theres an error', () => {
-    document.body.innerHTML = fs.readFileSync('./index.html');
-      const notesModel = require('./notesModel');
-      const notesApi = require('./notesApi');
-      notesModel.mockClear();
-      notesApi.mockClear();
-      jest.mock('./notesApi');
-      jest.mock('./notesModel');
-      const mockModel = new notesModel();
-      const mockApi = new notesApi();
-      const notesView = new NotesView(mockModel, mockApi);
 
-      notesView.displayError();
-      expect(document.querySelector("div.error").innerText).toEqual('Oops, something went wrong')
+  describe('.displayError', () => {
+    it('displays an error on the page if theres an error', () => {
+      document.body.innerHTML = fs.readFileSync('./index.html');
+        const notesModel = require('./notesModel');
+        const notesApi = require('./notesApi');
+        notesModel.mockClear();
+        notesApi.mockClear();
+        jest.mock('./notesApi');
+        jest.mock('./notesModel');
+        const mockModel = new notesModel();
+        const mockApi = new notesApi();
+        const notesView = new NotesView(mockModel, mockApi);
+  
+        notesView.displayError();
+        expect(document.querySelector("div.error").innerText).toEqual('Oops, something went wrong')
+    })
   })
+
+  describe('.reset', () => {
+    it('resets the notes', () => {
+      document.body.innerHTML = fs.readFileSync('./index.html');
+        const notesModel = require('./notesModel');
+        const notesApi = require('./notesApi');
+        notesModel.mockClear();
+        notesApi.mockClear();
+        jest.mock('./notesApi');
+        jest.mock('./notesModel');
+        const mockModel = new notesModel();
+        const mockApi = new notesApi();
+        const notesView = new NotesView(mockModel, mockApi);
+  
+        notesView.api.reset();
+
+        expect(document.querySelectorAll("div.note").length).toEqual(0)
+    })
+  })
+
 })
+
 

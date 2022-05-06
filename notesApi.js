@@ -11,7 +11,6 @@ class NotesApi {
       .catch(() => {
         console.error('Error');
         errorCallback();
-        // console.log('Catch Error Test')
       })
   }
 
@@ -46,13 +45,18 @@ class NotesApi {
     .then(response => response.json())
     .then(data => {
       console.log('Success:', (data));
-      console.log(data.emojified_text);
       callback(data.emojified_text);
     })
     .catch((error) => {
       console.error('Error:', error);
       callback();
-  })
+    })
+  }
+
+  reset(callback) {
+    fetch('http://localhost:3000/notes', {
+      method: 'DELETE'
+    }).then(callback)
   }
 }
 
