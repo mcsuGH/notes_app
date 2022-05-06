@@ -15,12 +15,17 @@ class NotesView {
     })
   }
 
+  // addNotes(titleText) {
+  //   this.api.createNote(titleText, () => {
+  //     this.displayNotesFromApi()
+  //   });
+  // };
+
   addNotes(titleText) {
-    const newNote = {
-      "content": titleText
-    };
-    this.api.createNote(newNote, () => {
-      this.displayNotesFromApi()
+    this.api.convertToEmoji(titleText, (response) => {
+      this.api.createNote(response, () => {
+        this.displayNotesFromApi();
+      })
     });
   };
 

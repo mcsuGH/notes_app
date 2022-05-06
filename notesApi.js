@@ -16,13 +16,13 @@ class NotesApi {
   }
 
   createNote(noteText, callback) {
-    // const noteObj = { "content": noteText }
+    const noteObj = { "content": noteText }
     fetch('http://localhost:3000/notes', {
       method: 'POST',
       headers: {
         'content-Type': 'application/json',
       },
-      body: JSON.stringify(noteText)
+      body: JSON.stringify(noteObj)
     })
     .then(response => response.json())
     .then(data => {
@@ -47,7 +47,7 @@ class NotesApi {
     .then(data => {
       console.log('Success:', (data));
       console.log(data.emojified_text);
-      return data.emojified_text
+      callback(data.emojified_text);
     })
     .catch((error) => {
       console.error('Error:', error);
